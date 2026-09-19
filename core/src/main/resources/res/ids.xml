@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="screen_buy"/>
+    <item type="id" name="screen_sell"/>
+    <item type="id" name="screen_yard"/>
+    <item type="id" name="screen_buyeq"/>
+    <item type="id" name="screen_selleq"/>
+    <item type="id" name="screen_personnel"/>
+    <item type="id" name="screen_bank"/>
+    <item type="id" name="screen_info"/>
+    <item type="id" name="screen_status"/>
+    <item type="id" name="screen_chart"/>
+    <item type="id" name="screen_warp"/>
+    
+    <item type="id" name="screen_yard_buyship"/>
+    <item type="id" name="screen_status_quests"/>
+    <item type="id" name="screen_status_ship"/>
+    <item type="id" name="screen_status_cargo"/>
+    <item type="id" name="screen_warp_target"/>
+    <item type="id" name="screen_warp_avgprices"/>
+    
+    <item type="id" name="screen_encounter"/>
+    <item type="id" name="screen_title"/>
+    <item type="id" name="screen_endofgame"/>
+    <item type="id" name="screen_blank"/>
+
+    <item type="id" name="viewholder"/>
+</resources>

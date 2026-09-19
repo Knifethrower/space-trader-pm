@@ -1,0 +1,121 @@
+	// ---- Options ----
+
+	private static final int[] OPTION_LABELS = {
+		R.string.dialog_options_fulltank, R.string.dialog_options_fullhull,
+		R.string.dialog_options_ignore_police, R.string.dialog_options_ignore_pirates, R.string.dialog_options_ignore_traders,
+		R.string.dialog_options_ignore_dealing, R.string.dialog_options_warpcosts,
+		R.string.dialog_options_contattack, R.string.dialog_options_contattflee,
+		R.string.dialog_options_news, R.string.dialog_options_loans,
+		R.string.dialog_options_range, R.string.dialog_options_track,
+	};
+
+	public int optionCount() { return OPTION_LABELS.length + 1; }
+
+	public String optionLabel(int i) {
+		if (i >= OPTION_LABELS.length) return getResources().getString(R.string.dialog_options_bays);
+		String label = getResources().getString(OPTION_LABELS[i]);
+		if (i >= 2 && i <= 4) return "Always ignore when safe: " + label;
+		return label;
+	}
+
+	/** Current value as text: on/off for switches, the number of bays for the last option. */
+	public String optionValue(int i) {
+		if (i >= OPTION_LABELS.length) return String.valueOf(leaveEmpty);
+		return optionFlag(i) ? "On" : "Off";
+	}
+
+	private boolean optionFlag(int i) {
+		switch (i) {
+		case 0: return autoFuel;
+		case 1: return autoRepair;
+		case 2: return alwaysIgnorePolice;
+		case 3: return alwaysIgnorePirates;
+		case 4: return alwaysIgnoreTraders;
+		case 5: return alwaysIgnoreTradeInOrbit;
+		case 6: return reserveMoney;
+		case 7: return continuous;
+		case 8: return attackFleeing;
+		case 9: return newsAutoPay;
+		case 10: return remindLoans;
+		case 11: return showTrackedRange;
+		default: return trackAutoOff;
+		}
+	}
+
+	public void optionToggle(int i) {
+		switch (i) {
+		case 0: autoFuel = !autoFuel; break;
+		case 1: autoRepair = !autoRepair; break;
+		case 2: alwaysIgnorePolice = !alwaysIgnorePolice; break;
+		case 3: alwaysIgnorePirates = !alwaysIgnorePirates; break;
+		case 4: alwaysIgnoreTraders = !alwaysIgnoreTraders; break;
+		case 5: alwaysIgnoreTradeInOrbit = !alwaysIgnoreTradeInOrbit; break;
+		case 6: reserveMoney = !reserveMoney; break;
+		case 7: continuous = !continuous; break;
+		case 8: attackFleeing = !attackFleeing; break;
+		case 9: newsAutoPay = !newsAutoPay; break;
+		case 10: remindLoans = !remindLoans; break;
+		case 11: showTrackedRange = !showTrackedRange; break;
+		case 12: trackAutoOff = !trackAutoOff; break;
+		default:
+			ui.showDialog(InputDialog.newInstance(
+					R.string.dialog_options_bays, -1,
+					R.string.generic_ok, -1, R.string.generic_cancel, -1,
+					new InputDialog.OnPositiveListener() {
+						@Override public void onClickPositiveButton(int value) { leaveEmpty = value; }
+					}, null));
+		}
+	}
+
+	// ---- Chart helpers ----
+
+	public SolarSystem trackedSystem() { return trackedSystem; }
+
+	public void trackSystem(SolarSystem s) { trackedSystem = (trackedSystem == s) ? null : s; }
+
+	public int fuelRange() { return ship.getFuel(); }
+
+	public boolean inRange(SolarSystem s) { return s != curSystem() && realDistance(curSystem(), s) <= ship.getFuel(); }
+
+	public boolean hasWormholeTo(SolarSystem s) { return wormholeExists(curSystem(), s); }
+
+	/** The opponent type of the current encounter (for the icon), Mantis-adjusted. */
+	public Opponent encounterOpponentType() {
+		if (encounterType == null) return null;
+		if (opponent != null && opponent.type == ShipType.MANTIS) return Opponent.MANTIS;
+		return encounterType.opponentType();
+	}
+
+	/** In fuel range, or joined to the current system by its wormhole (no fuel needed, but a tax is due). */
+	public boolean reachable(SolarSystem s) { return inRange(s) || (s != curSystem() && wormholeExists(curSystem(), s)); }
+
+	/** Tax charged for using the wormhole between the current system and s. */
+	public int wormholeTaxTo(SolarSystem s) { return wormholeTax(curSystem(), s); }
+
+	/** True when this system has a wormhole. */
+	public boolean hasWormhole(SolarSystem s) { return wormholeExists(s, null); }
+
+	/** The system at the other end of s's wormhole, or null. */
+	public SolarSystem wormholePartner(SolarSystem s) {
+		for (SolarSystem w : wormhole) if (w != null && wormholeExists(s, w)) return w;
+		return null;
+	}
+
+	/** Estimated selling price of a good in system s, from its size, tech level, government and (if visited) resources. */
+	public int averagePrice(TradeItem item, SolarSystem s) {
+		if (pricesHidden(s)) return 0; // shown as "--" by the front end
+		return standardPrice(item, s.size, s.techLevel(), s.politics(),
+				s.visited() ? s.specialResources : SpecialResources.NOSPECIALRESOURCES);
+	}
+
+	/** True when the good sells for more in s than it costs here and can be bought here (the original shows these in bold). */
+	public boolean priceIsProfit(TradeItem item, SolarSystem s) {
+		int price = averagePrice(item, s);
+		return price > buyPrice.get(item) && buyPrice.get(item) > 0 && curSystem().getQty(item) > 0;
+	}
+
+	/** On Hard and Impossible the price list only shows systems you have already visited. */
+	public boolean pricesHidden(SolarSystem s) {
+		return !s.visited() && difficulty.compareTo(DifficultyLevel.HARD) >= 0;
+	}
+

@@ -1,0 +1,20 @@
+# Build output (regenerate with ./package_portmaster.sh)
+build/
+
+# Libraries downloaded by the README's Compile step
+libs/
+
+# Local run data from ./run_desktop.sh
+savedata/
+tmp/
+log.txt
+*.jsa
+
+# Compiled classes and IDE/tool files
+*.class
+.gradle/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

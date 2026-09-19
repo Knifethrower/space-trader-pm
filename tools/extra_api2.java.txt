@@ -1,0 +1,213 @@
+	// ---- System information / special events ----
+
+	/** Set by systemInformationEntered(): whether the special-event button should be offered here. */
+	public boolean specialAvailable;
+
+	/** Call whenever the docked system screen is (re)entered; records news and marks the system visited. */
+	public void systemInformationEntered() { drawSystemInformationForm(); }
+
+	public boolean mercenaryForHire() { return getForHire() != null; }
+
+	private String specialEventSystemName() {
+		switch (curSystem().special()) {
+		case FLYBARATAS: return solarSystem[melina].name;
+		case FLYMELINA: return solarSystem[regulas].name;
+		case FLYREGULAS: return solarSystem[zalkon].name;
+		case MOONBOUGHT:
+		case MOONFORSALE: return solarSystem[utopia].name;
+		case SPACEMONSTER: return solarSystem[acamar].name;
+		case DRAGONFLY: return solarSystem[baratas].name;
+		case JAPORIDISEASE: return solarSystem[japori].name;
+		case AMBASSADORJAREK:
+		case JAREKGETSOUT: return solarSystem[devidia].name;
+		case ALIENINVASION:
+		case GEMULONINVADED:
+		case GEMULONRESCUED: return solarSystem[gemulon].name;
+		case EXPERIMENT: return solarSystem[daled].name;
+		case TRANSPORTWILD: return solarSystem[kravat].name;
+		case GETREACTOR: return solarSystem[nix].name;
+		default: return null;
+		}
+	}
+
+	public String specialEventTitle() {
+		String sys = specialEventSystemName();
+		return sys == null ? getResources().getString(curSystem().special().titleId) : getResources().getString(curSystem().special().titleId, sys);
+	}
+
+	public String specialEventMessage() {
+		String sys = specialEventSystemName();
+		return sys == null ? getResources().getString(curSystem().special().questStringId) : getResources().getString(curSystem().special().questStringId, sys);
+	}
+
+	public boolean specialEventIsMessage() { return curSystem().special().justAMessage; }
+
+	/** Show the special event of the current system as a dialog (yes/no or plain message). */
+	public void showSpecialEvent() { ui.showDialog(SpecialEventDialog.newInstance()); }
+
+	/** The player accepted the special event (or dismissed a plain message). */
+	public void specialEventAccept() { specialEventFormHandleEvent(0); }
+
+	// ---- Newspaper ----
+
+	public void readNewspaper() {
+		final int price = difficulty.ordinal() + 1;
+		if (!alreadyPaidForNewspaper && toSpend() < price) {
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_info_cantaffordpaper_title, R.string.screen_info_cantaffordpaper_message, R.string.help_cantbuynewspaper));
+			return;
+		}
+		OnConfirmListener read = new OnConfirmListener() {
+			@Override
+			public void onConfirm() {
+				if (!alreadyPaidForNewspaper) {
+					credits -= price;
+					alreadyPaidForNewspaper = true;
+				}
+				ui.showDialog(NewspaperDialog.newInstance());
+			}
+		};
+		if (!newsAutoPay && !alreadyPaidForNewspaper)
+			ui.showDialog(ConfirmDialog.newInstance(
+					R.string.screen_info_buynewspaper_title,
+					R.string.screen_info_buynewspaper_message,
+					R.string.screen_info_buynewspaper_pos,
+					R.string.screen_info_buynewspaper_neg,
+					R.string.help_buypaper,
+					read,
+					null,
+					price));
+		else read.onConfirm();
+	}
+
+	// ---- Personnel ----
+
+	public String crewSlotText(int slot) {
+		if (slot == 1) {
+			if (ship.type.crewQuarters == 3 && jarekStatus == 1 && wildStatus == 1) return getResources().getString(R.string.screen_personnel_wild);
+			if (ship.type.crewQuarters == 2 && (jarekStatus == 1 || wildStatus == 1))
+				return getResources().getString(jarekStatus == 1 ? R.string.screen_personnel_jarek : R.string.screen_personnel_wild);
+			if (ship.type.crewQuarters <= 1) return getResources().getString(R.string.screen_personnel_noquarters);
+			if (ship.crew[1] == null) return getResources().getString(R.string.screen_personnel_vacancy);
+			return crewStats(ship.crew[1]);
+		}
+		if (ship.type.crewQuarters == 3 && (jarekStatus == 1 || wildStatus == 1))
+			return getResources().getString(jarekStatus == 1 ? R.string.screen_personnel_jarek : R.string.screen_personnel_wild);
+		if (ship.type.crewQuarters <= 2) return getResources().getString(R.string.screen_personnel_noquarters);
+		if (ship.crew[2] == null) return getResources().getString(R.string.screen_personnel_vacancy);
+		return crewStats(ship.crew[2]);
+	}
+
+	/** True when the given crew slot (1 or 2) holds a real hired crew member who can be fired. */
+	public boolean crewSlotHasMercenary(int slot) {
+		return ship.crew[slot] != null && crewSlotText(slot).equals(crewStats(ship.crew[slot]));
+	}
+
+	public String crewStats(CrewMember c) {
+		return c.name + " - " + getResources().getString(R.string.format_dailycost, c.hirePrice()) + " - "
+				+ getResources().getString(R.string.screen_personnel_pilot, c.pilot()) + ", "
+				+ getResources().getString(R.string.screen_personnel_fighter, c.fighter()) + ", "
+				+ getResources().getString(R.string.screen_personnel_trader, c.trader()) + ", "
+				+ getResources().getString(R.string.screen_personnel_engineer, c.engineer());
+	}
+
+	public String hireCandidateText() {
+		CrewMember c = getForHire();
+		return c == null ? null : crewStats(c);
+	}
+
+	public void personnelFire(final int slot) {
+		final int oldTraderSkill = ship.skill(Skill.TRADER);
+		ui.showDialog(ConfirmDialog.newInstance(
+				R.string.screen_personnel_firemercenary_title,
+				R.string.screen_personnel_firemercenary_message,
+				R.string.help_firemercenary,
+				new OnConfirmListener() {
+					@Override
+					public void onConfirm() {
+						if (slot == 1) ship.crew[1] = ship.crew[2];
+						ship.crew[2] = null;
+						if (oldTraderSkill != ship.skill(Skill.TRADER)) recalculateBuyPrices(curSystem());
+						ui.stateChanged();
+					}
+				},
+				null,
+				ship.crew[slot]));
+	}
+
+	public void personnelHire() {
+		int oldTraderSkill = ship.skill(Skill.TRADER);
+		CrewMember forHire = getForHire();
+		if (forHire == null) return;
+		int firstFree = -1;
+		if (ship.crew[1] == null) firstFree = 1;
+		else if (ship.crew[2] == null) firstFree = 2;
+		if (firstFree < 0 || ship.availableQuarters() <= firstFree) {
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_personnel_dialog_noquarters, R.string.screen_personnel_dialog_noquarters_message, R.string.help_nofreequarters));
+		} else {
+			ship.crew[firstFree] = forHire;
+			if (oldTraderSkill != ship.skill(Skill.TRADER)) recalculateBuyPrices(curSystem());
+			ui.stateChanged();
+		}
+	}
+
+	// ---- Quests and special cargo (text versions of the status sub-screens) ----
+
+	public java.util.List<String> questLines() {
+		java.util.List<String> out = new java.util.ArrayList<>();
+		Resources r = getResources();
+		if (monsterStatus == 1) out.add(r.getString(R.string.screen_status_quests_monster, solarSystem[acamar]));
+		if ((dragonflyStatus >= 1 && dragonflyStatus <= 4) || solarSystem[zalkon].special() == SpecialEvent.INSTALLLIGHTNINGSHIELD) {
+			switch (dragonflyStatus) {
+			case 1: out.add(r.getString(R.string.screen_status_quests_dragonfly, solarSystem[baratas])); break;
+			case 2: out.add(r.getString(R.string.screen_status_quests_dragonfly, solarSystem[melina])); break;
+			case 3: out.add(r.getString(R.string.screen_status_quests_dragonfly, solarSystem[regulas])); break;
+			case 4: out.add(r.getString(R.string.screen_status_quests_dragonfly, solarSystem[zalkon])); break;
+			default: out.add(r.getString(R.string.screen_status_quests_lightningshield, solarSystem[zalkon])); break;
+			}
+		}
+		if (japoriDiseaseStatus == 1) out.add(r.getString(R.string.screen_status_quests_disease, solarSystem[japori]));
+		if (artifactOnBoard) out.add(r.getString(R.string.screen_status_quests_artifact));
+		if (wildStatus == 1) out.add(r.getString(R.string.screen_status_quests_wild, solarSystem[kravat]));
+		if (jarekStatus == 1) out.add(r.getString(R.string.screen_status_quests_jarek, solarSystem[devidia]));
+		if (invasionStatus >= 1 && invasionStatus < 7) {
+			int d = 7 - invasionStatus;
+			out.add(r.getQuantityString(R.plurals.screen_status_quests_invasion, d, d, solarSystem[gemulon]));
+		} else if (solarSystem[gemulon].special() == SpecialEvent.GETFUELCOMPACTOR) {
+			out.add(r.getString(R.string.screen_status_quests_fuelcompactor, solarSystem[gemulon]));
+		}
+		if (experimentStatus >= 1 && experimentStatus < 11) {
+			int d = 11 - experimentStatus;
+			out.add(r.getQuantityString(R.plurals.screen_status_quests_experiment, d, d, solarSystem[daled]));
+		}
+		if (solarSystem[nix].special() == SpecialEvent.GETSPECIALLASER) {
+			out.add(r.getString(R.string.screen_status_quests_speciallaser, solarSystem[nix]));
+		} else if (reactorStatus >= 1 && reactorStatus < 21) {
+			out.add(r.getString(reactorStatus < 2 ? R.string.screen_status_quests_reactor : R.string.screen_status_quests_reactor2, solarSystem[nix]));
+		}
+		if (scarabStatus == 1) out.add(r.getString(R.string.screen_status_quests_scarab));
+		if (ship.tribbles > 0) out.add(r.getString(R.string.screen_status_quests_tribbles));
+		if (moonBought) out.add(r.getString(R.string.screen_status_quests_moon, solarSystem[utopia]));
+		if (out.isEmpty()) out.add(r.getString(R.string.screen_status_quests_default));
+		return out;
+	}
+
+	public java.util.List<String> specialCargoLines() {
+		java.util.List<String> out = new java.util.ArrayList<>();
+		Resources r = getResources();
+		if (ship.tribbles > 0) {
+			if (ship.tribbles >= MAXTRIBBLES) out.add(r.getString(R.string.screen_status_cargo_manytribbles));
+			else out.add(r.getQuantityString(R.plurals.screen_status_cargo_tribbles, ship.tribbles, ship.tribbles));
+		}
+		if (japoriDiseaseStatus == 1) out.add(r.getString(R.string.screen_status_cargo_antidote));
+		if (artifactOnBoard) out.add(r.getString(R.string.screen_status_cargo_artifact));
+		if (jarekStatus == 2) out.add(r.getString(R.string.screen_status_cargo_hagglingcomputer));
+		if (reactorStatus > 0 && reactorStatus < 21) {
+			out.add(r.getString(R.string.screen_status_cargo_reactor));
+			int fuel = 10 - ((reactorStatus - 1) / 2);
+			out.add(r.getQuantityString(R.plurals.screen_status_cargo_reactorfuel, fuel, fuel));
+		}
+		if (canSuperWarp) out.add(r.getString(R.string.screen_status_cargo_singularity));
+		if (out.isEmpty()) out.add(r.getString(R.string.screen_status_cargo_default));
+		return out;
+	}
+

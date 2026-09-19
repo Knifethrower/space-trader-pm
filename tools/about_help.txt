@@ -1,0 +1,15 @@
+#S About and License
+Space Trader for handheld consoles is a port of the open-source Android version of Space Trader. It is free software, and you are welcome to share it under the terms of the GNU General Public License, which is in the License section of this help.
+#T Credits
+Space Trader was created by Pieter Spronck for the Palm OS.
+The Android version is by Russell Wolf (Copyright © 2014-2016 Russell Wolf, all rights reserved except as granted by the license in the License section) and is based on code by Pieter Spronck.
+This handheld port uses the game rules, text, help manual and artwork of that Android version. It adds a new front end, written in Java with libGDX, so the game can be played with a gamepad on PortMaster devices. The original authors have not reviewed or endorsed this port.
+#T License
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/. The full license text is in the file LICENSE-spacetrader.txt, in the licenses folder inside the game folder.
+#T Source code
+The complete source code of this port is published in its git repository, together with the tools that generate the game logic from the original Android source. The original Android source is available from its author.
+#T Third-party software
+Text is drawn with the DejaVu Sans font. The fonts are Copyright (c) Bitstream, and the DejaVu changes are in the public domain.
+The game uses libGDX (Apache License 2.0), LWJGL 3 (BSD license), GLFW (zlib license), jemalloc (BSD license), stb (MIT license or public domain) and FreeType (FreeType License). Each license text is in the licenses folder inside the game folder. On PortMaster the game runs on the Zulu OpenJDK and Westonpack runtimes, which are provided separately by PortMaster.

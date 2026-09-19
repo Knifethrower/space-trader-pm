@@ -1,0 +1,334 @@
+	// ---- Frontend-facing API (added for the port; not in the Android original) ----
+
+	public GameUI ui() { return ui; }
+
+	public DifficultyLevel difficulty() { return difficulty; }
+
+	/**
+	 * Begin a new game. Skill points must total at most 2 * MAXSKILL (the new-game dialog enforces the same rule).
+	 * Mirrors the confirm branch of the original newCommanderFormHandleEvent.
+	 */
+	public void newGame(String name, int pilot, int fighter, int trader, int engineer, DifficultyLevel level, boolean randomQuestSystems) {
+		difficulty = level;
+		mercenary[0] = new CrewMember(name, pilot, fighter, trader, engineer, this);
+		this.randomQuestSystems = randomQuestSystems;
+		startNewGame();
+		determinePrices(curSystem());
+
+		if (difficulty.compareTo(DifficultyLevel.NORMAL) < 0)
+			if (curSystem().special() == null)
+				curSystem().setSpecial(SpecialEvent.LOTTERYWINNER);
+
+		ui.setScreen(ScreenType.INFO);
+		ui.clearBackStack();
+		ui.autosave();
+	}
+
+	/** Set the warp target and begin the trip (fuel, days, interest, then the encounter loop). */
+	public boolean warpTo(SolarSystem target, boolean viaSingularity) {
+		warpSystem = target;
+		return doWarp(viaSingularity);
+	}
+
+	public SolarSystem[] solarSystems() { return solarSystem; }
+
+	public SolarSystem[] wormholes() { return wormhole; }
+
+	public SolarSystem currentSystem() { return curSystem(); }
+
+	public CrewMember commanderMember() { return commander(); }
+
+	// ---- Encounter presentation helpers ----
+
+	/** Call when the encounter screen is first shown, before reading the texts below. */
+	public void encounterScreenEntered() {
+		prevEncounterAction = null;
+	}
+
+	/** Opening description of an encounter (first-display text). */
+	public String encounterInitialDescription() {
+		if (encounterType == Encounter.VeryRare.POSTMARIEPOLICE)
+			return getResources().getString(R.string.screen_encounter_description_customs);
+		String opponentType = encounterType.opponentType().toXmlStringInit(getResources());
+		if (opponent.type == ShipType.MANTIS) {
+			opponentType = Opponent.MANTIS.toXmlStringInit(getResources());
+		}
+		String opponentShip = opponent.type.toXmlString(getResources()).toLowerCase(Locale.getDefault());
+		if (encounterType == Encounter.VeryRare.MARIECELESTE) {
+			opponentShip = getResources().getString(R.string.opponent_ship);
+		} else if (encounterType.opponentType() == Opponent.FAMOUSCAPTAIN) {
+			if (encounterType == Encounter.VeryRare.CAPTAINAHAB) {
+				opponentType = getResources().getString(R.string.opponent_initial_famouscaptain);
+				opponentShip = getResources().getString(R.string.opponent_ahab);
+			}
+			if (encounterType == Encounter.VeryRare.CAPTAINCONRAD) {
+				opponentShip = getResources().getString(R.string.opponent_conrad);
+			}
+			if (encounterType == Encounter.VeryRare.CAPTAINHUIE) {
+				opponentShip = getResources().getString(R.string.opponent_huie);
+			}
+		}
+		return getResources().getQuantityString(R.plurals.screen_encounter_description_initial, clicks, clicks, warpSystem, opponentType, opponentShip);
+	}
+
+	/** What the opponent is about to do, for the encounter screen. */
+	public String encounterNextAction(boolean firstDisplay) {
+		if (firstDisplay && encounterType == Encounter.Police.ATTACK && policeRecordScore > PoliceRecord.CRIMINAL.score) {
+			return getResources().getString(R.string.opponentaction_hailsurrender);
+		} else if (encounterType.action() == OpponentAction.IGNORE && ship.cloaked(opponent)) {
+			return getResources().getString(R.string.opponentaction_cloaked);
+		}
+		return encounterType.action().toXmlString(getResources());
+	}
+
+	public Ship playerShip() { return ship; }
+
+	public Ship opponentShip() { return opponent; }
+
+	public int tribbleCount() { return ship.tribbles; }
+
+	public boolean autoAttackOn() { return autoAttack || autoFlee; }
+
+	// ---- Plunder / jettison ----
+
+	/** Ask how many of an opponent's cargo item to plunder. */
+	public void plunderPick(TradeItem item) {
+		if (opponent.getCargo(item) <= 0)
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_buy_notavailable_title, R.string.dialog_plunder_nothing, R.string.help_victimdoesnthaveany));
+		else
+			getAmountToPlunder(item);
+	}
+
+	public void plunderAll(TradeItem item) { plunderCargo(item, 999); }
+
+	/** Finished plundering: continue the trip. */
+	public void plunderDone() {
+		if (encounterType == Encounter.VeryRare.MARIECELESTE && ship.getCargo(TradeItem.NARCOTICS) > narcs)
+			justLootedMarie = true;
+		travel();
+	}
+
+	public void dumpPick(TradeItem item) {
+		if (ship.getCargo(item) <= 0)
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_sell_nodumpgoods, R.string.screen_sell_nogoods_message, R.string.help_dumpitem));
+		else
+			getAmountToSell(item, SellOperation.JETTISON);
+	}
+
+	public void dumpAll(final TradeItem item) {
+		if (ship.getCargo(item) <= 0) {
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_sell_nodumpgoods, R.string.screen_sell_nogoods_message, R.string.help_dumpitem));
+			return;
+		}
+		ui.showDialog(ConfirmDialog.newInstance(
+				R.string.dialog_dumpall_title,
+				R.string.dialog_dumpall_message,
+				R.string.help_dumpall,
+				new OnConfirmListener() {
+					@Override
+					public void onConfirm() {
+						sellCargo(item, 999, SellOperation.JETTISON);
+					}
+				},
+				null,
+				item,
+				buyingPrice.get(item)));
+	}
+
+	// ---- Simple status accessors ----
+
+	public int credits() { return credits; }
+	public int debt() { return debt; }
+	public int days() { return days; }
+	public int buyPriceOf(TradeItem item) { return buyPrice.get(item); }
+	public int sellPriceOf(TradeItem item) { return sellPrice.get(item); }
+	public int policeRecord() { return policeRecordScore; }
+	public int reputation() { return reputationScore; }
+
+	// ---- Persistence (single save slot, properties file) ----
+
+	/** Writes the whole game to prefs; returns false if the file could not be written. */
+	public boolean save(SharedPreferences prefs) {
+		SharedPreferences.Editor e = prefs.edit();
+		e.clear(); // drop keys of earlier states (e.g. endStatus from a finished game, opponent from an old encounter)
+		saveState(e);
+		return e.commit();
+	}
+
+	public void load(SharedPreferences prefs) {
+		loadState(prefs);
+	}
+
+	// ---- Bank ----
+
+	public int maxLoanAmount() { return maxLoan(); }
+	public int noClaimDays() { return noClaim; }
+	public boolean hasInsurance() { return insurance; }
+	public boolean hasEscapePod() { return escapePod; }
+
+	public void bankGetLoan() {
+		if (debt >= maxLoan()) {
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_bank_loan_toohigh_title, R.string.screen_bank_loan_toohigh_message, R.string.help_debttoohigh));
+			return;
+		}
+		ui.showDialog(InputDialog.newInstance(
+				R.string.screen_bank_loan_get_title,
+				R.string.screen_bank_loan_get_message,
+				R.string.generic_ok,
+				R.string.generic_maximum,
+				R.string.generic_nothing,
+				R.string.help_getloan,
+				new InputDialog.OnPositiveListener() {
+					@Override public void onClickPositiveButton(int value) { getLoan(value); ui.stateChanged(); }
+				},
+				new InputDialog.OnNeutralListener() {
+					@Override public void onClickNeutralButton() { getLoan(MAXLOAN); ui.stateChanged(); }
+				},
+				maxLoan() - debt));
+	}
+
+	public void bankPayBack() {
+		if (debt <= 0) {
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_bank_loan_nodebt_title, R.string.screen_bank_loan_nodebt_message, R.string.help_nodebt));
+			return;
+		}
+		ui.showDialog(InputDialog.newInstance(
+				R.string.screen_bank_loan_pay_title,
+				R.string.screen_bank_loan_pay_message,
+				R.string.generic_ok,
+				R.string.generic_everything,
+				R.string.generic_nothing,
+				R.string.help_payback,
+				new InputDialog.OnPositiveListener() {
+					@Override public void onClickPositiveButton(int value) { payBack(value); ui.stateChanged(); }
+				},
+				new InputDialog.OnNeutralListener() {
+					@Override public void onClickNeutralButton() { payBack(debt); ui.stateChanged(); }
+				},
+				debt));
+	}
+
+	public void bankToggleInsurance() {
+		if (!insurance) {
+			if (!escapePod) {
+				ui.showDialog(SimpleDialog.newInstance(R.string.screen_bank_ins_nopod, R.string.screen_bank_ins_useless, R.string.help_noescapepod, false));
+				return;
+			}
+			insurance = true;
+		} else {
+			ui.showDialog(ConfirmDialog.newInstance(
+					R.string.screen_bank_ins_stop,
+					R.string.screen_bank_ins_stopquery,
+					R.string.help_stopinsurance,
+					new OnConfirmListener() {
+						@Override public void onConfirm() { insurance = false; noClaim = 0; ui.stateChanged(); }
+					},
+					null,
+					false));
+		}
+	}
+
+	// ---- Equipment ----
+
+	public int equipmentBuyPrice(Purchasable item) {
+		return item.buyPrice(curSystem().techLevel(), ship.skill(Skill.TRADER));
+	}
+
+	public void buyEquipment(Purchasable item) {
+		if (item instanceof Weapon) {
+			buyItem(ship.type.weaponSlots, ship.weapon, equipmentBuyPrice(item), item.toXmlString(getResources()), item);
+		} else if (item instanceof Shield) {
+			buyItem(ship.type.shieldSlots, ship.shield, equipmentBuyPrice(item), item.toXmlString(getResources()), item);
+		} else if (item instanceof Gadget) {
+			if (ship.hasGadget((Gadget) item) && Gadget.EXTRABAYS != item)
+				ui.showDialog(SimpleDialog.newInstance(R.string.screen_buyeq_dialog_notuseful, R.string.screen_buyeq_dialog_notuseful_message, R.string.help_nomoreofitem));
+			else
+				buyItem(ship.type.gadgetSlots, ship.gadget, equipmentBuyPrice(item), item.toXmlString(getResources()), item);
+		}
+	}
+
+	/** Sell the equipment in slot {@code index} of the given kind (0 = weapon, 1 = shield, 2 = gadget). */
+	public void sellEquipment(final int kind, final int index) {
+		ui.showDialog(ConfirmDialog.newInstance(
+				R.string.generic_sell,
+				R.string.screen_selleq_sellquery,
+				R.string.help_sellitem,
+				new OnConfirmListener() {
+					@Override
+					public void onConfirm() {
+						if (kind == 0) {
+							credits += ship.weapon[index].sellPrice();
+							for (int i = index + 1; i < ship.weapon.length; i++) ship.weapon[i - 1] = ship.weapon[i];
+							ship.weapon[ship.weapon.length - 1] = null;
+						} else if (kind == 1) {
+							credits += ship.shield[index].sellPrice();
+							for (int i = index + 1; i < ship.shield.length; i++) {
+								ship.shield[i - 1] = ship.shield[i];
+								ship.shieldStrength[i - 1] = ship.shieldStrength[i];
+							}
+							ship.shield[ship.shield.length - 1] = null;
+							ship.shieldStrength[ship.shieldStrength.length - 1] = 0;
+						} else {
+							if (ship.gadget[index] == Gadget.EXTRABAYS && ship.filledCargoBays() > ship.totalCargoBays() - 5) {
+								ui.showDialog(SimpleDialog.newInstance(R.string.screen_selleq_cargobaysfull_title, R.string.screen_selleq_cargobaysfull_message, R.string.help_cargobaysfull));
+								return;
+							}
+							credits += ship.gadget[index].sellPrice();
+							for (int i = index + 1; i < ship.gadget.length; i++) ship.gadget[i - 1] = ship.gadget[i];
+							ship.gadget[ship.gadget.length - 1] = null;
+						}
+						ui.stateChanged();
+					}
+				},
+				null));
+	}
+
+	// ---- Shipyard ----
+
+	public void yardFuel(boolean full) {
+		if (full) buyFuel(ship.getFuelTanks() * ship.type.costOfFuel);
+		else getAmountForFuel();
+	}
+
+	public void yardRepair(boolean full) {
+		if (full) buyRepairs(ship.getHullStrength() * ship.type.repairCosts);
+		else getAmountForRepairs();
+	}
+
+	public boolean canBuyPod() {
+		return !(escapePod || toSpend() < 2000 || curSystem().techLevel().compareTo(ShipType.values()[0].minTechLevel) < 0);
+	}
+
+	public void yardBuyPod() {
+		ui.showDialog(ConfirmDialog.newInstance(
+				R.string.screen_yard_buypod_title,
+				R.string.screen_yard_buypod_query,
+				R.string.help_buyescapepod,
+				new OnConfirmListener() {
+					@Override public void onConfirm() { escapePod = true; credits -= 2000; ui.stateChanged(); }
+				}, null));
+	}
+
+	/** Called when the buy-ship screen opens: refreshes prices and shows the tribble warning once. */
+	public void enterBuyShip() {
+		determineShipPrices();
+		if (ship.tribbles > 0 && !tribbleMessage) {
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_yard_buyship_tribbles_title, R.string.screen_yard_buyship_tribbles_message, R.string.help_shipnotworthmuch));
+			tribbleMessage = true;
+		}
+	}
+
+	public int shipPriceOf(ShipType type) { return shipPrice.get(type); }
+
+	public void showShipInfo(ShipType type) {
+		selectedShipType = type;
+		ui.showDialog(ShipInfoDialog.newInstance());
+	}
+
+	public ShipType selectedShip() { return selectedShipType; }
+
+	public void buyShipType(ShipType type) {
+		selectedShipType = type;
+		new BuyShipTask().execute();
+	}
+

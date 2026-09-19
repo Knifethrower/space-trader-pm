@@ -1,0 +1,32 @@
+	// ---- Retiring, game over, high scores ----
+
+	public boolean isGameOver() { return endStatus != null; }
+
+	/** True when a game (not yet over) is loaded or in progress. */
+	public boolean hasActiveGame() { return ship != null && endStatus == null; }
+
+	public void retire() {
+		ui.showDialog(ConfirmDialog.newInstance(
+				R.string.dialog_retire_title,
+				R.string.dialog_retire_message,
+				R.string.help_retire,
+				new OnConfirmListener() {
+					@Override public void onConfirm() { showEndGameScreen(EndStatus.RETIRED); }
+				}, null));
+	}
+
+	public java.util.List<String> highScoreLines() {
+		java.util.List<String> out = new java.util.ArrayList<>();
+		Resources r = getResources();
+		for (int i = 0; i < hScores.length; i++) {
+			if (hScores[i] == null) continue; // unused slots are simply not listed
+			HighScore h = hScores[i];
+			int score = h.score;
+			out.add((i + 1) + ". " + h.name + "  " + r.getString(R.string.dialog_highscores_percent, score / 50, (score % 50) / 5));
+			out.add("    " + r.getQuantityString(R.plurals.dialog_highscores_description, h.days,
+					h.status.toXmlString(r), h.days, h.worth, h.difficulty.toXmlString(r).toLowerCase(Locale.getDefault())));
+		}
+		if (out.isEmpty()) out.add("No scores yet. Finish a game to set one.");
+		return out;
+	}
+

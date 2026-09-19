@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="screen_list">
+        <item>@string/screen_buy</item>
+        <item>@string/screen_sell</item>
+        <item>@string/screen_yard</item>
+        <item>@string/screen_buyeq</item>
+        <item>@string/screen_selleq</item>
+        <item>@string/screen_personnel</item>
+        <item>@string/screen_bank</item>
+        <item>@string/screen_info</item>
+        <item>@string/screen_status</item>
+        <item>@string/screen_chart</item>
+        <item>@string/screen_warp</item>
+    </string-array>
+
+    <string-array name="shortcut_list">
+        <item>@string/shortcut_buy</item>
+        <item>@string/shortcut_sell</item>
+        <item>@string/shortcut_yard</item>
+        <item>@string/shortcut_buyeq</item>
+        <item>@string/shortcut_selleq</item>
+        <item>@string/shortcut_personnel</item>
+        <item>@string/shortcut_bank</item>
+        <item>@string/shortcut_info</item>
+        <item>@string/shortcut_status</item>
+        <item>@string/shortcut_chart</item>
+        <item>@string/shortcut_warp</item>
+    </string-array>
+    
+    <string-array name="menu_game_labels">
+        <item>@string/menu_new</item>
+        <item>@string/menu_switch</item>
+        <item>@string/menu_retire</item>
+        
+        <item>@string/menu_options</item>
+        <item>@string/menu_shortcuts</item>
+        <item>@string/menu_scores</item>
+        
+        <item>@string/menu_clearscores</item>
+        <item>@string/menu_savegame</item>
+    </string-array>
+    
+    <string-array name="menu_help_labels">
+        <item>@string/menu_help_current</item>
+        <item>@string/menu_help_helponmenu</item>
+        
+        <item>@string/menu_help_howtoplay</item>
+        <item>@string/menu_help_trading</item>
+        <item>@string/menu_help_traveling</item>
+        <item>@string/menu_help_shipequipment</item>
+        <item>@string/menu_help_skills</item>
+        <item>@string/menu_help_firststeps</item>
+        <item>@string/menu_help_acknowledgements</item>
+        
+        <item>@string/menu_help_about</item>
+        
+        <item>@string/menu_help_documentation</item>
+    </string-array>
+    
+    <array name="menu_game_ids">
+        <item>@id/menu_new</item>
+        <item>@id/menu_switch</item>
+        <item>@id/menu_retire</item>
+        
+        <item>@id/menu_options</item>
+        <item>@id/menu_shortcuts</item>
+        <item>@id/menu_scores</item>
+        
+        <item>@id/menu_clearscores</item>
+        <item>@id/menu_savegame</item>
+    </array>
+    
+    <array name="menu_help_ids">
+        <item>@id/menu_help_current</item>
+        <item>@id/menu_help_helponmenu</item>
+        
+        <item>@id/menu_help_howtoplay</item>
+        <item>@id/menu_help_trading</item>
+        <item>@id/menu_help_traveling</item>
+        <item>@id/menu_help_shipequipment</item>
+        <item>@id/menu_help_skills</item>
+        <item>@id/menu_help_firststeps</item>
+        <item>@id/menu_help_acknowledgements</item>
+        
+        <item>@id/menu_help_about</item>
+        
+        <item>@id/menu_help_documentation</item>
+    </array>
+    
+    
+    <!-- NB the following name lists preserve Pieter Spronck's original comments -->
+    <eat-comment/>
+    <string-array name="mercenary_name">
+        <item>@string/name_commander</item>
+        <item>@string/mercenary_alyssa</item>
+		<item>@string/mercenary_armatur</item>
+		<item>@string/mercenary_bentos</item>
+		<item>@string/mercenary_c2u2</item>			
+		<item>@string/mercenary_chiti</item>
+		<item>@string/mercenary_crystal</item>
+		<item>@string/mercenary_dane</item>
+		<item>@string/mercenary_deirdre</item>		
+		<item>@string/mercenary_doc</item>
+		<item>@string/mercenary_draco</item>
+		<item>@string/mercenary_iranda</item>
+		<item>@string/mercenary_jeremiah</item>
+		<item>@string/mercenary_jujubal</item>
+		<item>@string/mercenary_krydon</item>
+		<item>@string/mercenary_luis</item>
+		<item>@string/mercenary_mercedez</item>
+		<item>@string/mercenary_milete</item>
+		<item>@string/mercenary_muril</item>		
+		<item>@string/mercenary_mystyc</item>
+		<item>@string/mercenary_nandi</item>		
+		<item>@string/mercenary_orestes</item>
+		<item>@string/mercenary_pancho</item>
+		<item>@string/mercenary_ps37</item>			
+		<item>@string/mercenary_quarck</item>		
+		<item>@string/mercenary_sosumi</item>
+		<item>@string/mercenary_uma</item>			
+		<item>@string/mercenary_wesley</item>
+		<item>@string/mercenary_wonton</item>
+		<item>@string/mercenary_yorvick</item>
+		<item>@string/mercenary_zeethibal</item> <!-- anagram for Elizabeth -->
+    </string-array>
+        
+    <string-array name="solar_system_name">
+	<!-- Many of these names are from Star Trek: The Next Generation, or are small changes
+	     to names of this series. A few have different origins. -->
+		<item>@string/solarsystem_acamar</item>
+		<item>@string/solarsystem_adahn</item>     <!-- The alternate personality for The Nameless One in "Planescape: Torment" -->
+		<item>@string/solarsystem_aldea</item>
+		<item>@string/solarsystem_andevian</item>
+		<item>@string/solarsystem_antedi</item>
+		<item>@string/solarsystem_balosnee</item>
+		<item>@string/solarsystem_baratas</item>
+		<item>@string/solarsystem_brax</item>      <!-- One of the heroes in Master of Magic -->
+		<item>@string/solarsystem_bretel</item>    <!-- This is a Dutch device for keeping your pants up. -->
+		<item>@string/solarsystem_calondia</item>
+		<item>@string/solarsystem_campor</item>
+		<item>@string/solarsystem_capelle</item>   <!-- The city I lived in while programming this game -->
+		<item>@string/solarsystem_carzon</item>
+		<item>@string/solarsystem_castor</item>    <!-- A Greek demi-god -->
+		<item>@string/solarsystem_cestus</item>
+		<item>@string/solarsystem_cheron</item>		
+		<item>@string/solarsystem_courteney</item> <!-- After Courteney Cox... -->
+		<item>@string/solarsystem_daled</item>
+		<item>@string/solarsystem_damast</item>
+		<item>@string/solarsystem_davlos</item>
+		<item>@string/solarsystem_deneb</item>
+		<item>@string/solarsystem_deneva</item>
+		<item>@string/solarsystem_devidia</item>
+		<item>@string/solarsystem_draylon</item>
+		<item>@string/solarsystem_drema</item>
+		<item>@string/solarsystem_endor</item>
+		<item>@string/solarsystem_esmee</item>     <!-- One of the witches in Pratchett's Discworld -->
+		<item>@string/solarsystem_exo</item>
+		<item>@string/solarsystem_ferris</item>    <!-- Iron -->
+		<item>@string/solarsystem_festen</item>    <!-- A great Scandinavian movie -->
+		<item>@string/solarsystem_fourmi</item>    <!-- An ant, in French -->
+		<item>@string/solarsystem_frolix</item>    <!-- A solar system in one of Philip K. Dick's novels -->
+		<item>@string/solarsystem_gemulon</item>
+		<item>@string/solarsystem_guinifer</item>  <!-- One way of writing the name of king Arthur's wife -->
+		<item>@string/solarsystem_hades</item>     <!-- The underworld -->
+		<item>@string/solarsystem_hamlet</item>    <!-- From Shakespeare -->
+		<item>@string/solarsystem_helena</item>    <!-- Of Troy -->
+		<item>@string/solarsystem_hulst</item>     <!-- A Dutch plant -->
+		<item>@string/solarsystem_iodine</item>    <!-- An element -->
+		<item>@string/solarsystem_iralius</item>
+		<item>@string/solarsystem_janus</item>     <!-- A seldom encountered Dutch boy's name -->
+		<item>@string/solarsystem_japori</item>
+		<item>@string/solarsystem_jarada</item>
+		<item>@string/solarsystem_jason</item>     <!-- A Greek hero -->
+		<item>@string/solarsystem_kaylon</item>
+		<item>@string/solarsystem_khefka</item>
+		<item>@string/solarsystem_kira</item>      <!-- My dog's name -->
+		<item>@string/solarsystem_klaatu</item>    <!-- From a classic SF movie -->
+		<item>@string/solarsystem_klaestron</item>
+		<item>@string/solarsystem_korma</item>     <!-- An Indian sauce -->
+		<item>@string/solarsystem_kravat</item>    <!-- Interesting spelling of the French word for "tie" -->
+		<item>@string/solarsystem_krios</item>
+		<item>@string/solarsystem_laertes</item>   <!-- A king in a Greek tragedy -->
+		<item>@string/solarsystem_largo</item>
+		<item>@string/solarsystem_lave</item>      <!-- The starting system in Elite -->
+		<item>@string/solarsystem_ligon</item>
+		<item>@string/solarsystem_lowry</item>     <!-- The name of the "hero" in Terry Gilliam's "Brazil" -->
+		<item>@string/solarsystem_magrat</item>    <!-- The second of the witches in Pratchett's Discworld -->
+		<item>@string/solarsystem_malcoria</item>
+		<item>@string/solarsystem_melina</item>
+		<item>@string/solarsystem_mentar</item>    <!-- The Psilon home system in Master of Orion -->
+		<item>@string/solarsystem_merik</item>
+		<item>@string/solarsystem_mintaka</item>
+		<item>@string/solarsystem_montor</item>    <!-- A city in Ultima III and Ultima VII part 2 -->
+		<item>@string/solarsystem_mordan</item>
+		<item>@string/solarsystem_myrthe</item>    <!-- The name of my daughter -->
+		<item>@string/solarsystem_nelvana</item>
+		<item>@string/solarsystem_nix</item>       <!-- An interesting spelling of a word meaning "nothing" in Dutch -->
+		<item>@string/solarsystem_nyle</item>      <!-- An interesting spelling of the great river -->
+		<item>@string/solarsystem_odet</item>
+		<item>@string/solarsystem_og</item>        <!-- The last of the witches in Pratchett's Discworld -->
+		<item>@string/solarsystem_omega</item>     <!-- The end of it all -->
+		<item>@string/solarsystem_omphalos</item>  <!-- Greek for navel -->
+		<item>@string/solarsystem_orias</item>
+		<item>@string/solarsystem_othello</item>   <!-- From Shakespeare -->
+		<item>@string/solarsystem_parade</item>    <!-- This word means the same in Dutch and in English -->
+		<item>@string/solarsystem_penthara</item>
+		<item>@string/solarsystem_picard</item>    <!-- The enigmatic captain from ST:TNG -->
+		<item>@string/solarsystem_pollux</item>    <!-- Brother of Castor -->
+		<item>@string/solarsystem_quator</item>
+		<item>@string/solarsystem_rakhar</item>
+		<item>@string/solarsystem_ran</item>       <!-- A film by Akira Kurosawa -->
+		<item>@string/solarsystem_regulas</item>
+		<item>@string/solarsystem_relva</item>
+		<item>@string/solarsystem_rhymus</item>
+		<item>@string/solarsystem_rochani</item>
+		<item>@string/solarsystem_rubicum</item>   <!-- The river Ceasar crossed to get into Rome -->
+		<item>@string/solarsystem_rutia</item>
+		<item>@string/solarsystem_sarpeidon</item>
+		<item>@string/solarsystem_sefalla</item>
+		<item>@string/solarsystem_seltrice</item>
+		<item>@string/solarsystem_sigma</item>
+		<item>@string/solarsystem_sol</item>       <!-- That's our own solar system -->
+		<item>@string/solarsystem_somari</item>
+		<item>@string/solarsystem_stakoron</item>
+		<item>@string/solarsystem_styris</item>
+		<item>@string/solarsystem_talani</item>
+		<item>@string/solarsystem_tamus</item>
+		<item>@string/solarsystem_tantalos</item>  <!-- A king from a Greek tragedy -->
+		<item>@string/solarsystem_tanuga</item>
+		<item>@string/solarsystem_tarchannen</item>
+		<item>@string/solarsystem_terosa</item>
+		<item>@string/solarsystem_thera</item>     <!-- A seldom encountered Dutch girl's name -->
+		<item>@string/solarsystem_titan</item>     <!-- The largest moon of Jupiter -->
+		<item>@string/solarsystem_torin</item>     <!-- A hero from Master of Magic -->
+		<item>@string/solarsystem_triacus</item>
+		<item>@string/solarsystem_turkana</item>
+		<item>@string/solarsystem_tyrus</item>
+		<item>@string/solarsystem_umberlee</item>  <!-- A god from AD&D, which has a prominent role in Baldur's Gate -->
+		<item>@string/solarsystem_utopia</item>    <!-- The ultimate goal -->
+		<item>@string/solarsystem_vadera</item>
+		<item>@string/solarsystem_vagra</item>
+		<item>@string/solarsystem_vandor</item>
+		<item>@string/solarsystem_ventax</item>
+		<item>@string/solarsystem_xenon</item>
+		<item>@string/solarsystem_xerxes</item>    <!-- A Greek hero -->
+		<item>@string/solarsystem_yew</item>       <!-- A city which is in almost all of the Ultima games -->
+		<item>@string/solarsystem_yojimbo</item>   <!-- A film by Akira Kurosawa -->
+		<item>@string/solarsystem_zalkon</item>
+		<item>@string/solarsystem_zuul</item>      <!-- From the first Ghostbusters movie -->
+	</string-array>
+	<eat-comment/>
+</resources>

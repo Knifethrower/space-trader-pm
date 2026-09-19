@@ -1,0 +1,24 @@
+Space Trader for PortMaster: developer notes
+============================================
+
+The user-facing build steps are in portmaster/spacetrader/README.md (Compile section).
+
+Layout
+  core/                       game rules and data (no graphics). datatypes/GameState.java is GENERATED.
+  desktop/                    libGDX front end (front/SpaceTraderApp.java) and launcher
+  portmaster/spacetrader/     the PR folder: port.json, README.md, gameinfo.xml, testing_thread.txt,
+                              screenshot.png, "Space Trader.sh", and the game folder spacetrader/
+                              (spacetrader.ini for gptokeyb2, licenses/)
+  tools/                      generators, patch scripts and the packaging checks
+  reference/                  GameState.java.orig, the input to the GameState generator
+
+Build the port         ./package_portmaster.sh
+                       -> build/spacetrader.zip (installable) and build/pr/spacetrader/ (for the PR).
+                       tools/package_port.py fails the build if a packaging rule is broken
+                       (em dashes, banned launch script patterns, port.json schema, README shape, etc.).
+Run on a desktop       ./run_desktop.sh 1280 720
+Regenerate GameState   python tools/extract_gamestate.py   (edit tools/*.py and tools/extra_api*.java.txt,
+                       never GameState.java itself)
+Regenerate help text   python tools/build_help.py          (needs the original Android help page; the
+                       result, core/src/main/resources/help.txt, is committed)
+Resize artwork         java tools/ResizeImage.java <in> <out.jpg> <w> <h> [quality]

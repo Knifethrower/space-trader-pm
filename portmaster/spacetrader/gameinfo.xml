@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gameList>
+  <game>
+    <path>./Space Trader.sh</path>
+    <name>Space Trader</name>
+    <desc>A trading strategy game set across 120 star systems. Buy cargo where it is cheap and sell it where it is dear, fit out your ship with weapons, shields and gadgets, hire mercenaries, borrow from the bank, and survive encounters with pirates, police and traders. Special missions and rare random events add variety on the way to earning enough to retire to your own moon. Based on the open source Android version of Pieter Spronck's Palm OS classic.</desc>
+    <releasedate>20020101T000000</releasedate>
+    <developer>Pieter Spronck</developer>
+    <publisher>Open Source</publisher>
+    <genre>Strategy</genre>
+    <image>./spacetrader/screenshot.png</image>
+  </game>
+</gameList>
