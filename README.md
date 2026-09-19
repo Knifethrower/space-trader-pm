@@ -50,6 +50,7 @@ To try the game on a desktop:
 | `portmaster/spacetrader/` | The PortMaster package files: launch script, `port.json`, `gameinfo.xml`, README, controller `.ini` and licences. |
 | `tools/` | Generators, build helpers and the packaging checks. |
 | `reference/` | `GameState.java.orig`, the input to the GameState generator. |
+| `upstream/` | The complete original Android source (version 2.3), kept because its own repository is gone. |
 
 Developer notes, including how to regenerate `GameState.java`, are in [BUILDING.txt](BUILDING.txt).
 
