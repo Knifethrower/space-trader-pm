@@ -8,7 +8,7 @@ Tested so far: dArkOS on an RG353V at 640x480.
 
 ## Install
 
-Download `spacetrader.zip`, drop it in your PortMaster autoinstall folder and run PortMaster. The first launch needs an internet connection to download the Java and Westonpack runtimes (about 190 MB).
+Download `spacetrader.zip`, drop it in your PortMaster autoinstall folder and run PortMaster. The first launch needs an internet connection to download the Java and Westonpack runtimes (about 250 MB).
 
 ## Controls
 

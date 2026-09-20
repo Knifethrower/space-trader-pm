@@ -8,7 +8,7 @@ Title: Space Trader
 URL: https://github.com/Knifethrower/space-trader-pm
 
 Instructions:
-Ready to run. The first launch needs internet to download the Java and Westonpack runtimes (about 190 MB).
+Ready to run. The first launch needs internet to download the Java and Westonpack runtimes (about 250 MB).
 
 | Button | Action |
 |--|--|
