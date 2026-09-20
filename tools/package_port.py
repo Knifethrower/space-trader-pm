@@ -53,8 +53,9 @@ def read(name):
 for name in ("port.json", "README.md", "gameinfo.xml", "testing_thread.txt", SH, GAME_DIR + "/spacetrader.ini"):
     if not os.path.isfile(os.path.join(PR, name)):
         fail("missing file: " + name)
-if not os.path.isfile(os.path.join(PR, "screenshot.png")):
-    fail("missing screenshot.png")
+for img in ("screenshot.png", "cover.png"):
+    if not os.path.isfile(os.path.join(PR, img)):
+        fail("missing " + img)
 
 if not errors:
     # em dashes are banned in all generated port content
@@ -124,19 +125,20 @@ if not errors:
     gi = read("gameinfo.xml")
     if "<path>./" + SH + "</path>" not in gi:
         fail("gameinfo.xml path must match the launch script name")
-    if "<image>./" + GAME_DIR + "/screenshot.png</image>" not in gi:
-        fail("gameinfo.xml image must include the game folder prefix")
+    if "<image>./" + GAME_DIR + "/cover.png</image>" not in gi:
+        fail("gameinfo.xml image must be the cover, with the game folder prefix")
     if "<desc>" not in gi or "<releasedate>" not in gi:
         fail("gameinfo.xml missing desc or releasedate")
 
-    # screenshot: PNG, at least 640x480, 4:3
-    head = open(os.path.join(PR, "screenshot.png"), "rb").read(24)
-    if head[:8] != b"\x89PNG\r\n\x1a\n":
-        fail("screenshot.png is not a PNG")
-    else:
-        w, h = struct.unpack(">II", head[16:24])
-        if w < 640 or h < 480 or abs(w / h - 4 / 3) > 0.01:
-            fail("screenshot.png must be 4:3 and at least 640x480 (got %dx%d)" % (w, h))
+    # screenshot and cover: PNG, at least 640x480, 4:3
+    for img in ("screenshot.png", "cover.png"):
+        head = open(os.path.join(PR, img), "rb").read(24)
+        if head[:8] != b"\x89PNG\r\n\x1a\n":
+            fail(img + " is not a PNG")
+        else:
+            w, h = struct.unpack(">II", head[16:24])
+            if w < 640 or h < 480 or abs(w / h - 4 / 3) > 0.01:
+                fail(img + " must be 4:3 and at least 640x480 (got %dx%d)" % (w, h))
 
 if errors:
     print("PACKAGING RULE VIOLATIONS:")
@@ -147,7 +149,7 @@ if errors:
 # ---- 4. the installable zip: the port.json items plus the metadata files, no wrapping folder ----------
 if os.path.exists(ZIP):
     os.remove(ZIP)
-top = list(pj["items"]) + ["port.json", "README.md", "gameinfo.xml", "screenshot.png"]
+top = list(pj["items"]) + ["port.json", "README.md", "gameinfo.xml", "screenshot.png", "cover.png"]
 with zipfile.ZipFile(ZIP, "w", zipfile.ZIP_DEFLATED) as z:
     for entry in top:
         path = os.path.join(PR, entry)

@@ -7,7 +7,7 @@ Layout
   core/                       game rules and data (no graphics). datatypes/GameState.java is GENERATED.
   desktop/                    libGDX front end (front/SpaceTraderApp.java) and launcher
   portmaster/spacetrader/     the PR folder: port.json, README.md, gameinfo.xml, testing_thread.txt,
-                              screenshot.png, "Space Trader.sh", and the game folder spacetrader/
+                              screenshot.png, cover.png, "Space Trader.sh", and the game folder spacetrader/
                               (spacetrader.ini for gptokeyb2, licenses/)
   tools/                      generators, patch scripts and the packaging checks
   reference/                  GameState.java.orig, the input to the GameState generator
@@ -22,3 +22,4 @@ Regenerate GameState   python tools/extract_gamestate.py   (edit tools/*.py and 
 Regenerate help text   python tools/build_help.py          (needs the original Android help page; the
                        result, core/src/main/resources/help.txt, is committed)
 Resize artwork         java tools/ResizeImage.java <in> <out.jpg> <w> <h> [quality]
+Make the cover         java tools/MakeCover.java core/src/main/resources/sprites/title_bg.jpg portmaster/spacetrader/cover.png
