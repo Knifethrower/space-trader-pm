@@ -8,7 +8,7 @@ Tested so far on dArkOS (RG353V, 640x480), muOS (TrimUI Brick, 1024x768), AmberE
 
 ## Install
 
-Download `spacetrader.zip`, drop it in your PortMaster autoinstall folder and run PortMaster. The first launch needs an internet connection to download the Java and Westonpack runtimes (about 250 MB).
+Download `spacetrader.zip`, drop it in your PortMaster autoinstall folder and run PortMaster. It requires the runtimes `zulu17.48.15-ca-jdk17.0.10-linux` (Zulu OpenJDK 17.0.10) and `weston_pkg_0.2` (Westonpack 0.2), which PortMaster provides.
 
 ## Controls
 
