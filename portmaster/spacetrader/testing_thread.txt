@@ -21,11 +21,11 @@ Ready to run. The first launch needs internet to download the Java and Westonpac
 |Select| Back |
 
 CFW Tests:
-[ ] AmberELEC
+[x] AmberELEC
 [x] dArkOS
-[ ] MuOS
+[x] MuOS
 ROCKNIX
--> [ ] Libmali
+-> [x] Libmali
 -> [ ] Panfrost
 -> [ ] Adreno (Optional)
 [ ] Knulli
@@ -33,5 +33,5 @@ ROCKNIX
 Resolutions:
 [ ] 480x320 (Optional)
 [x] 640x480
-[ ] 720x720 (RGB30) (Optional)
-[ ] Higher resolutions (e.g., 1280)
+[x] 720x720 (RGB30) (Optional)
+[x] Higher resolutions (e.g., 1280)
