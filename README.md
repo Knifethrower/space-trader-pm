@@ -4,7 +4,7 @@ A port of Space Trader, the classic trading game, to handheld consoles through [
 
 The game is a Java port built with libGDX. The rules come from the open source Android version of Space Trader; the interface is new and made for a D-Pad and four face buttons. It runs at 640x480 and 1280x720, and other resolutions should scale.
 
-Tested so far on dArkOS (RG353V, 640x480), muOS (TrimUI Brick, 1024x768), AmberELEC (RG552) and ROCKNIX (RGB30, 720x720).
+Tested so far on dArkOS (RG353V, 640x480), muOS (TrimUI Brick, 1024x768), AmberELEC (RG552, 1920x1152) and ROCKNIX (RGB30, 720x720).
 
 ## Install
 
