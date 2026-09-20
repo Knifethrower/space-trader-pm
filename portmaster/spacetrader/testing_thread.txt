@@ -1,13 +1,15 @@
-Space Trader
+**Game Information**
+Title: Space Trader
+URL: https://github.com/Knifethrower/space-trader-pm
 
-A trading strategy game set across 120 star systems. Buy cargo where it is cheap and sell it where it is dear, fit out your ship with weapons, shields and gadgets, hire mercenaries, borrow from the bank, and survive encounters with pirates, police and traders, on the way to earning enough to retire to your own moon.
+A trading strategy game set across 120 star systems. Buy cargo where it is cheap and sell it where it is in demand, fit out your ship with weapons, shields and gadgets, hire mercenaries, borrow from the bank, and survive encounters with pirates, police and traders, on the way to earning enough to retire to your own moon.
 
-Credits: Space Trader was created by Pieter Spronck (https://www.spronck.net/spacetrader/). This port is built on the open source Android version by Russell Wolf. Both are licensed under the GNU GPL v3. Port by Knifethrower.
+Credits: Space Trader was created by Pieter Spronck (https://www.spronck.net/spacetrader/). This port is built on the open source Android version by Russell Wolf. The original is licensed under the GNU GPL v2 or later, the Android version is licensed under the GNU GPL v3 as is this port.
 
 What this port is based on: the game rules come from Russell Wolf's open source Android version (GPL v3), which is itself based on Pieter Spronck's Palm OS game. The rules code was carried over from the Android source with the Android user interface calls replaced by a small interface, so the economy, encounters, quests and special events behave as in the Android version. The artwork (ship pictures, icons, title art, the killed, retired and moon end screens) and the help manual text also come from the Android version.
 
 What is new in this port:
-- A new interface written with libGDX for a D-Pad and four face buttons, with no touch screen needed. It scales from 640x480 up to large screens and is centred on displays that are not 4:3.
+- A new interface written with libGDX for a D-Pad and four face buttons, with no touch screen needed. It scales from 640x480 up to large screens and is centered on displays that are not 4:3.
 - Commander names are entered with an on-screen letter picker.
 - The game saves after every action, when it exits and when it is closed by the system. Saves are written safely, so an interrupted save cannot corrupt the file. Android save files are not compatible.
 
@@ -18,11 +20,7 @@ Drop the .zip into your Portmaster autoinstall folder and run Portmaster.
 or
 run via ssh: harbourmaster install "zip url from discord"
 
-Game Information
-Title: Space Trader
-URL: https://github.com/Knifethrower/space-trader-pm
-
-Instructions:
+**Instructions:**
 Ready to run. Requires the runtimes zulu17.48.15-ca-jdk17.0.10-linux (Zulu OpenJDK 17.0.10) and weston_pkg_0.2 (Westonpack 0.2). The game has no sound.
 
 | Button | Action |
@@ -35,7 +33,7 @@ Ready to run. Requires the runtimes zulu17.48.15-ca-jdk17.0.10-linux (Zulu OpenJ
 |Start| Select |
 |Select| Back |
 
-CFW Tests:
+**CFW Tests:**
 [x] AmberELEC
 [x] dArkOS
 [x] MuOS
@@ -45,7 +43,7 @@ ROCKNIX
 -> [ ] Adreno (Optional)
 [ ] Knulli
 
-Resolutions:
+**Resolutions:**
 [ ] 480x320 (Optional)
 [x] 640x480
 [x] 720x720 (RGB30) (Optional)
