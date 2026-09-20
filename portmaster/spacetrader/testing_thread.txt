@@ -1,3 +1,11 @@
+Space Trader
+
+A trading strategy game set across 120 star systems. Buy cargo where it is cheap and sell it where it is dear, fit out your ship with weapons, shields and gadgets, hire mercenaries, borrow from the bank, and survive encounters with pirates, police and traders, on the way to earning enough to retire to your own moon.
+
+Credits: Space Trader was created by Pieter Spronck (https://www.spronck.net/spacetrader/). This port is built on the open source Android version by Russell Wolf. Both are licensed under the GNU GPL v3. Port by Knifethrower.
+
+AI disclosure: AI was used for this port. The code and the launch script were written with Claude, an AI assistant by Anthropic.
+
 Instructions to install the Testing Zip:
 Drop the .zip into your Portmaster autoinstall folder and run Portmaster.
 or

@@ -58,6 +58,7 @@ Developer notes, including how to regenerate `GameState.java`, are in [BUILDING.
 
 - [Pieter Spronck](https://www.spronck.net/spacetrader/) created Space Trader.
 - Russell Wolf wrote the open source Android version that this port is built on.
+- AI was used for this port. The code and the launch script were written with Claude, an AI assistant by Anthropic.
 - The port uses libGDX, LWJGL 3, GLFW, jemalloc, stb, FreeType and the DejaVu fonts. Their licences are in `portmaster/spacetrader/spacetrader/licenses/`.
 
 ## License
