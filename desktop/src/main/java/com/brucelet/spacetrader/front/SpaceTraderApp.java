@@ -157,6 +157,10 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height, true);
+		// On screens taller than 4:3 (for example 1:1) the viewport adds height above the 640x480 game area;
+		// centre the game area vertically so the spare space is split evenly above and below.
+		camera.position.y = VH / 2f;
+		camera.update();
 		if (fontReady) rebuildFont();
 	}
 
@@ -839,8 +843,8 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 
 	/** Draws a texture scaled to cover the whole visible area, centred (any excess is cropped). */
 	void drawCover(Texture t) {
-		float ww = viewport.getWorldWidth();
-		float k = Math.max(ww / t.getWidth(), VH / t.getHeight());
+		float ww = viewport.getWorldWidth(), wh = viewport.getWorldHeight();
+		float k = Math.max(ww / t.getWidth(), wh / t.getHeight());
 		float w = t.getWidth() * k, h = t.getHeight() * k;
 		batch.setColor(Color.WHITE);
 		batch.draw(t, (ww - w) / 2f, (VH - h) / 2f, w, h);
