@@ -4,6 +4,14 @@ A trading strategy game set across 120 star systems. Buy cargo where it is cheap
 
 Credits: Space Trader was created by Pieter Spronck (https://www.spronck.net/spacetrader/). This port is built on the open source Android version by Russell Wolf. Both are licensed under the GNU GPL v3. Port by Knifethrower.
 
+What this port is based on: the game rules come from Russell Wolf's open source Android version (GPL v3), which is itself based on Pieter Spronck's Palm OS game. The rules code was carried over from the Android source with the Android user interface calls replaced by a small interface, so the economy, encounters, quests and special events behave as in the Android version. The artwork (ship pictures, icons, title art, the killed, retired and moon end screens) and the help manual text also come from the Android version.
+
+What is new in this port:
+- A new interface written with libGDX for a D-Pad and four face buttons, with no touch screen needed. It scales from 640x480 up to large screens and is centred on displays that are not 4:3.
+- Commander names are entered with an on-screen letter picker.
+- The game saves after every action, when it exits and when it is closed by the system. Saves are written safely, so an interrupted save cannot corrupt the file. Android save files are not compatible.
+- The game has no sound.
+
 AI disclosure: AI was used for this port. The code and the launch script were written with Claude, an AI assistant by Anthropic.
 
 Instructions to install the Testing Zip:
