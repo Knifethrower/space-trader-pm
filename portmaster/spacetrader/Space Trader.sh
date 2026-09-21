@@ -70,7 +70,8 @@ fi
 
 $GPTOKEYB2 "java" -c "$GAMEDIR/$ini_filename" &
 
-# tmp/ is Java's temp dir: the libGDX and LWJGL native libraries are unpacked there, so it must be executable storage.
+# tmp/ is Java's temp directory (java.io.tmpdir): the libGDX and LWJGL native libraries are unpacked there at start-up.
+# It is kept inside the game folder as a precaution; the default temp directory has not been tested.
 $ESUDO env WESTON_HEADLESS_WIDTH=$DISPLAY_WIDTH WESTON_HEADLESS_HEIGHT=$DISPLAY_HEIGHT \
 $weston_dir/westonwrap.sh headless noop kiosk crusty_glx_gl4es \
 PATH=$PATH JAVA_HOME=$JAVA_HOME XDG_SESSION_TYPE=x11 WAYLAND_DISPLAY= XDG_DATA_HOME=$GAMEDIR \
