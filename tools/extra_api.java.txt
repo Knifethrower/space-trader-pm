@@ -108,6 +108,16 @@
 		travel();
 	}
 
+	/** Sell button on the sell screen: the same checks sellCargo makes, done before asking how many (which divides by the cargo count). */
+	public void sellPick(TradeItem item) {
+		if (ship.getCargo(item) <= 0)
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_sell_nogoods, R.string.screen_sell_nogoods_message, R.string.help_nothingforsale));
+		else if (sellPrice.get(item) <= 0)
+			ui.showDialog(SimpleDialog.newInstance(R.string.screen_sell_notinterested, R.string.screen_sell_notinterested_message, R.string.help_notinterested));
+		else
+			getAmountToSell(item, SellOperation.SELL);
+	}
+
 	public void dumpPick(TradeItem item) {
 		if (ship.getCargo(item) <= 0)
 			ui.showDialog(SimpleDialog.newInstance(R.string.screen_sell_nodumpgoods, R.string.screen_sell_nogoods_message, R.string.help_dumpitem));

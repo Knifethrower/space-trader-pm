@@ -109,6 +109,7 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 	// scripted input for testing (-Dst.script=DOWN,ENTER,...)
 	final Deque<Integer> script = new ArrayDeque<>();
 	int scriptDelay = 0, shotIndex = 0;
+	static final int KEY_DELAY = Integer.getInteger("st.keydelay", 20); // frames between scripted keys (test harness only)
 
 	@Override
 	public void create() {
@@ -526,7 +527,7 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 					else if (it.equals("High Scores")) game.viewHighScores();
 					else if (it.equals("Options")) { optionsReturn = Mode.TITLE; mode = Mode.OPTIONS; sel = 0; }
 					else if (it.equals("Help")) openHelp(Mode.TITLE);
-					else Gdx.app.exit();
+					else if (System.getProperty("st.noquit") == null) Gdx.app.exit(); // st.noquit: test harness only
 				}
 				break;
 			}
@@ -612,7 +613,7 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 				if (back) { mode = Mode.HUB; sel = 0; }
 				break;
 			case SELL:
-				if (ok) game.getAmountToSell(TradeItem.values()[sel], SellOperation.SELL);
+				if (ok) game.sellPick(TradeItem.values()[sel]);
 				if (alt) game.dumpPick(TradeItem.values()[sel]);
 				if (back) { mode = Mode.HUB; sel = 0; }
 				break;
@@ -696,7 +697,7 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 
 	@Override
 	public void render() {
-		if (!script.isEmpty() && ++scriptDelay >= 20) {
+		if (!script.isEmpty() && ++scriptDelay >= KEY_DELAY) {
 			scriptDelay = 0;
 			int k = script.poll();
 			onKey(k);
