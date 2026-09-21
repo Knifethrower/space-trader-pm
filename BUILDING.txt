@@ -23,3 +23,7 @@ Regenerate help text   python tools/build_help.py          (needs the original A
                        result, core/src/main/resources/help.txt, is committed)
 Resize artwork         java tools/ResizeImage.java <in> <out.jpg> <w> <h> [quality]
 Make the cover         java tools/MakeCover.java core/src/main/resources/sprites/title_bg.jpg portmaster/spacetrader/cover.png
+Shrink PNG files       python tools/compress_png.py lossy portmaster/spacetrader/cover.png
+                       python tools/compress_png.py lossless portmaster/spacetrader/screenshot.png
+                       (uses oxipng and pngquant from tools/pngtools/, which are not in the repository;
+                       the download links are at the top of tools/compress_png.py)
