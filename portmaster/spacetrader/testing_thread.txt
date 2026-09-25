@@ -21,7 +21,9 @@ or
 run via ssh: harbourmaster install "zip url from discord"
 
 **Instructions:**
-Ready to run. Requires the runtimes zulu17.48.15-ca-jdk17.0.10-linux (Zulu OpenJDK 17.0.10) and weston_pkg_0.2 (Westonpack 0.2). The game has no sound.
+Ready to run. Requires the runtimes zulu17.54.21-ca-jre17.0.13-linux (Zulu JRE 17.0.13) and weston_pkg_0.2 (Westonpack 0.2), about 100 MB together. The game has no sound.
+
+Please check: first launch (runtime download and install), quitting and relaunching with Continue, and the controls below. Attach log.txt.
 
 | Button | Action |
 |--|--|
@@ -34,17 +36,19 @@ Ready to run. Requires the runtimes zulu17.48.15-ca-jdk17.0.10-linux (Zulu OpenJ
 |Select| Back |
 
 **CFW Tests:**
-[x] AmberELEC
+[ ] AmberELEC
 [x] dArkOS
-[x] MuOS
+[ ] MuOS
 ROCKNIX
--> [x] Libmali
+-> [ ] Libmali
 -> [ ] Panfrost
 -> [ ] Adreno (Optional)
 [ ] Knulli
 
+AmberELEC, muOS and ROCKNIX passed on an earlier build that used a full JDK runtime instead of the current JRE; they need retesting on this build before being ticked again.
+
 **Resolutions:**
 [ ] 480x320 (Optional)
 [x] 640x480
-[x] 720x720 (RGB30) (Optional)
-[x] Higher resolutions (e.g., 1280)
+[ ] 720x720 (RGB30) (Optional)
+[ ] Higher resolutions (e.g., 1280)

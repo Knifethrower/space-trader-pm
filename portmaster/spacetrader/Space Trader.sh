@@ -19,7 +19,7 @@ get_controls
 GAMEDIR=/$directory/ports/spacetrader
 ini_filename="spacetrader.ini"
 weston_runtime="weston_pkg_0.2"
-java_runtime="zulu17.48.15-ca-jdk17.0.10-linux"
+java_runtime="zulu17.54.21-ca-jre17.0.13-linux"
 
 > "$GAMEDIR/log.txt" && exec > >(tee "$GAMEDIR/log.txt") 2>&1
 
@@ -39,7 +39,7 @@ if [[ "$PM_CAN_MOUNT" != "N" ]]; then
 fi
 $ESUDO mount "$controlfolder/libs/${weston_runtime}.squashfs" "${weston_dir}"
 
-# Java runtime (Zulu 17)
+# Java runtime (Zulu 17 JRE)
 export JAVA_HOME="/tmp/javaruntime/"
 $ESUDO mkdir -p "${JAVA_HOME}"
 if [ ! -f "$controlfolder/libs/${java_runtime}.squashfs" ]; then
@@ -60,7 +60,9 @@ cd $GAMEDIR
 mkdir -p "$GAMEDIR/savedata" "$GAMEDIR/tmp"
 
 # Class-data archive: cuts JVM start-up time. Made on the first run, reused afterwards, rebuilt if the jar changes.
-JSA="$GAMEDIR/spacetrader.jsa"
+# It only works with the Java build that made it, so it is named after the runtime and archives from other runtimes are removed.
+JSA="$GAMEDIR/spacetrader-${java_runtime}.jsa"
+find "$GAMEDIR" -maxdepth 1 -name 'spacetrader*.jsa' ! -name "${JSA##*/}" -delete
 [ "$GAMEDIR/spacetrader.jar" -nt "$JSA" ] && rm -f "$JSA"
 if [ -f "$JSA" ]; then
   CDS="-XX:SharedArchiveFile=$JSA"

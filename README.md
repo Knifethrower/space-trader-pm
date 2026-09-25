@@ -4,11 +4,11 @@ A port of Space Trader, the classic trading game, to handheld consoles through [
 
 The game is a Java port built with libGDX. The rules come from the open source Android version of Space Trader; the interface is new and made for a D-Pad and four face buttons. It runs at 640x480 and 1280x720, and other resolutions should scale.
 
-Tested so far on dArkOS (RG353V, 640x480), muOS (TrimUI Brick, 1024x768), AmberELEC (RG552, 1920x1152) and ROCKNIX (RGB30, 720x720).
+Tested so far on dArkOS (RG353V, 640x480). muOS (TrimUI Brick, 1024x768), AmberELEC (RG552, 1920x1152) and ROCKNIX (RGB30, 720x720) were tested on an earlier build that used a full JDK runtime; retesting them on the current JRE-based build is pending.
 
 ## Install
 
-Download `spacetrader.zip` from the [latest release](https://github.com/Knifethrower/space-trader-pm/releases/latest), drop it in your PortMaster autoinstall folder and run PortMaster. It requires the runtimes `zulu17.48.15-ca-jdk17.0.10-linux` (Zulu OpenJDK 17.0.10) and `weston_pkg_0.2` (Westonpack 0.2), which PortMaster provides.
+Download `spacetrader.zip` from the [latest release](https://github.com/Knifethrower/space-trader-pm/releases/latest), drop it in your PortMaster autoinstall folder and run PortMaster. The first launch downloads about 100 MB of runtimes: `zulu17.54.21-ca-jre17.0.13-linux` (Zulu JRE 17.0.13) and `weston_pkg_0.2` (Westonpack 0.2), both provided by PortMaster.
 
 ## Controls
 
