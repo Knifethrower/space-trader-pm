@@ -14,7 +14,9 @@ public class DesktopLauncher {
 		cfg.setTitle("Space Trader");
 		if (fullscreen) cfg.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		else cfg.setWindowedMode(w, h);
-		cfg.disableAudio(true); // the game has no sound; skips OpenAL start-up entirely
+		// the game has no sound, which skips OpenAL start-up entirely; st.testmusic is a dev-only
+		// switch (see IbxmMusicPlayer) to try tracker-format music through libGDX/OpenAL
+		cfg.disableAudio(System.getProperty("st.testmusic") == null);
 		cfg.setForegroundFPS(60);
 		cfg.useVsync(true);
 		new Lwjgl3Application(new SpaceTraderApp(), cfg);

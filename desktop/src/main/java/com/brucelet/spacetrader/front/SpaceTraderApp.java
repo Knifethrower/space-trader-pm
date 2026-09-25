@@ -144,6 +144,12 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 
 		loadAll();
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> saveNow("shutdown")));
+
+		String testMusic = System.getProperty("st.testmusic");
+		if (testMusic != null) {
+			musicPlayer = new IbxmMusicPlayer();
+			musicPlayer.start(testMusic);
+		}
 	}
 
 	/** Case-insensitive key lookup (libGDX names are like "Enter", "Down"). */
@@ -169,6 +175,7 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 
 	boolean fontReady;
 	boolean ready;
+	IbxmMusicPlayer musicPlayer; // dev-only, see st.testmusic in create()
 
 	void loadAll() {
 		rebuildFont();
@@ -1895,6 +1902,7 @@ public class SpaceTraderApp extends ApplicationAdapter implements GameUI {
 
 	@Override
 	public void dispose() {
+		if (musicPlayer != null) musicPlayer.stop();
 		batch.dispose();
 		shapes.dispose();
 		font.dispose();
